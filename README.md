@@ -45,7 +45,7 @@ This guide outlines the complete setup to enable communication between [CORE (Co
 
 ### ⚡ 3. Configure PowerWorld DS
 
-- On your **Windows machine**, open `PowerWorld Simulator` and load:
+- On your **Windows machine**, open `PowerWorld Dynamic Studio` and load:
 
   - `Microgrid_PowerWorld.pwb` – the simulation file.
   - `Microgrid_PowerWorld.pwd` – the one-line diagram.
