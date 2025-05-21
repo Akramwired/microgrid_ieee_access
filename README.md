@@ -1,13 +1,33 @@
-
 # 🔌 Integrating CORE with PowerWorld via DNP3 in a Dockerized Environment
 
-This guide outlines the complete setup to enable communication between [CORE (Common Open Research Emulator)](https://www.nrl.navy.mil/itd/ncs/products/core) and [PowerWorld DS](https://www.powerworld.com/products/simulator) through a Dockerized DNP3 Master. This includes building the Docker container, configuring the DNP3 Master script, and launching emulated nodes that communicate over the DNP3 protocol.
+This guide outlines the complete setup to enable communication between [CORE (Common Open Research Emulator)](https://www.nrl.navy.mil/itd/ncs/products/core) and [PowerWorld DS](https://www.powerworld.com/products/simulator) through a Dockerized DNP3 Master. This includes configuring the DNP3 Master script, building the Docker container, and launching emulated nodes that communicate over the DNP3 protocol.
 
 ---
 
 ## 🚀 Step-by-Step Instructions
 
-### 🐳 1. Create and Start the Docker Container
+### ⚡ 1. Configure PowerWorld DS
+
+- On your **Windows machine**, open `PowerWorld Simulator` and load:
+
+  - `Microgrid_PowerWorld.pwb` – the simulation file.
+  - `Microgrid_PowerWorld.pwd` – the one-line diagram.
+
+- Note the **IP address** of the Windows device running PowerWorld DS (you'll use it to configure the DNP3 master).
+
+---
+
+### 📝 2. Configure DNP3 Master Script
+
+- Open the `pydnp3_master.py` script and replace the host IP address with the IP noted from Step 1:
+
+  ```python
+  HOST = "PowerWolrdDS_Server_IP"  # Replace this with the actual IP
+  ```
+
+---
+
+### 🐳 3. Create and Start the Docker Container
 
 - Use the provided `Dockerfile` to build a Docker image:
 
@@ -25,7 +45,7 @@ This guide outlines the complete setup to enable communication between [CORE (Co
 
 ---
 
-### 🔐 2. Install OpenSSL Server Inside the Container
+### 🔐 4. Install OpenSSL Server Inside the Container
 
 - Enter the container:
 
@@ -39,33 +59,6 @@ This guide outlines the complete setup to enable communication between [CORE (Co
   apt update && apt install -y openssh-server
   passwd root  # Set a password (you will use this in later scripts)
   service ssh start
-  ```
-
----
-
-### ⚡ 3. Configure PowerWorld DS
-
-- On your **Windows machine**, open `PowerWorld Dynamic Studio` and load:
-
-  - `Microgrid_PowerWorld.pwb` – the simulation file.
-  - `Microgrid_PowerWorld.pwd` – the one-line diagram.
-
-- Note the **IP address** of the Windows device running PowerWorld DS (you'll use it to configure the DNP3 master).
-
----
-
-### 📝 4. Configure DNP3 Master Script
-
-- Start the container again (if not already running):
-
-  ```bash
-  docker start <your_container_name>
-  ```
-
-- Inside the container, edit the IP address in `pydnp3_master.py`:
-
-  ```python
-  HOST = "PowerWolrdDS_Server_IP"  # Replace this with the actual IP
   ```
 
 ---
@@ -94,7 +87,7 @@ This guide outlines the complete setup to enable communication between [CORE (Co
 
   ```bash
   CONTAINER_NAME="<your_container_name>"
-  SSH_PASSWORD="1"  # Replace with the password you set for root in Step 2
+  SSH_PASSWORD="1"  # Replace with the password you set for root in Step 4
   ```
 
 ---
@@ -103,7 +96,7 @@ This guide outlines the complete setup to enable communication between [CORE (Co
 
 - Start CORE and load the topology file:
 
-  ```
+  ```bash
   Microgrid_CORE.xml
   ```
 
